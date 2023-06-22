@@ -8,7 +8,17 @@ class MoviesController < ApplicationController
 
   def show
     movie = Movie.find(params[:id])
-    render json: movie
+    render json: movie.to_json(except: [:created_at, :updated_at])
+  end
+
+  def summary
+    movie = Movie.find(params[:id])
+    render json: movie, serializer: MovieSummarySerializer
+  end
+
+  def summaries
+    movies = Movie.all
+    render json: movies, each_serializer: MovieSummarySerializer
   end
 
   private
